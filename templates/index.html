@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Application de prédiction du diabète utilisant le machine learning">
+    <meta name="keywords" content="diabète, prédiction, machine learning, santé">
+    <meta name="author" content="Votre Nom">
+
+    <title>Prédiction du Diabète | ML App</title>
+
+    <!-- Favicon (optionnel) -->
+    <link rel="icon" type="image/x-icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+    <!-- Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- Votre CSS personnalisé -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Header avec navigation -->
+        <header class="header">
+            <nav class="navbar">
+                <div class="nav-brand">
+                    <i class="fas fa-heartbeat"></i>
+                    <span>DiabPredict</span>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="active">Accueil</a></li>
+                    <li><a href="#about">À propos</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- Main content -->
+        <main class="main-content">
+            <div class="container">
+                <!-- Hero section -->
+                <section class="hero">
+                    <h1 class="hero-title">
+                        <i class="fas fa-stethoscope"></i>
+                        Prédiction du Diabète
+                    </h1>
+                    <p class="hero-subtitle">
+                        Découvrez votre risque de diabète grâce à notre modèle de machine learning
+                    </p>
+                </section>
+
+                <!-- Formulaire de prédiction -->
+                <section class="prediction-section">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>
+                                <i class="fas fa-notes-medical"></i>
+                                Renseignez vos informations médicales
+                            </h2>
+                            <p class="text-muted">Tous les champs sont obligatoires</p>
+                        </div>
+
+                        <form action="/predict" method="post" class="prediction-form" id="predictionForm">
+                            <div class="form-grid">
+                                <!-- Grossesses -->
+                                <div class="form-group">
+                                    <label for="pregnancies">
+                                        <i class="fas fa-fetus"></i>
+                                        Grossesses
+                                    </label>
+                                    <input type="number"
+                                           id="pregnancies"
+                                           name="Pregnancies"
+                                           placeholder="Nombre de grossesses"
+                                           min="0"
+                                           max="20"
+                                           step="1"
+                                           required>
+                                    <small class="form-text">Nombre de grossesses antérieures</small>
+                                </div>
+
+                                <!-- Glucose -->
+                                <div class="form-group">
+                                    <label for="glucose">
+                                        <i class="fas fa-droplet"></i>
+                                        Glucose
+                                    </label>
+                                    <input type="number"
+                                           id="glucose"
+                                           name="Glucose"
+                                           placeholder="Taux de glucose"
+                                           min="0"
+                                           max="300"
+                                           step="any"
+                                           required>
+                                    <small class="form-text">mg/dL</small>
+                                </div>
+
+                                <!-- Pression artérielle -->
+                                <div class="form-group">
+                                    <label for="bloodpressure">
+                                        <i class="fas fa-heart"></i>
+                                        Pression artérielle
+                                    </label>
+                                    <input type="number"
+                                           id="bloodpressure"
+                                           name="BloodPressure"
+                                           placeholder="Pression diastolique"
+                                           min="0"
+                                           max="200"
+                                           step="any"
+                                           required>
+                                    <small class="form-text">mm Hg</small>
+                                </div>
+
+                                <!-- Épaisseur de la peau -->
+                                <div class="form-group">
+                                    <label for="skinthickness">
+                                        <i class="fas fa-layer-group"></i>
+                                        Épaisseur cutanée
+                                    </label>
+                                    <input type="number"
+                                           id="skinthickness"
+                                           name="SkinThickness"
+                                           placeholder="Épaisseur du pli cutané"
+                                           min="0"
+                                           max="100"
+                                           step="any"
+                                           required>
+                                    <small class="form-text">mm</small>
+                                </div>
+
+                                <!-- Insuline -->
+                                <div class="form-group">
+                                    <label for="insulin">
+                                        <i class="fas fa-syringe"></i>
+                                        Insuline
+                                    </label>
+                                    <input type="number"
+                                           id="insulin"
+                                           name="Insulin"
+                                           placeholder="Taux d'insuline"
+                                           min="0"
+                                           max="1000"
+                                           step="any"
+                                           required>
+                                    <small class="form-text">µU/mL</small>
+                                </div>
+
+                                <!-- IMC -->
+                                <div class="form-group">
+                                    <label for="bmi">
+                                        <i class="fas fa-weight-scale"></i>
+                                        IMC
+                                    </label>
+                                    <input type="number"
+                                           id="bmi"
+                                           name="BMI"
+                                           placeholder="Indice de masse corporelle"
+                                           min="0"
+                                           max="100"
+                                           step="0.1"
+                                           required>
+                                    <small class="form-text">kg/m²</small>
+                                </div>
+
+                                <!-- Fonction pedigree diabète -->
+                                <div class="form-group">
+                                    <label for="pedigree">
+                                        <i class="fas fa-dna"></i>
+                                        Fonction pedigree
+                                    </label>
+                                    <input type="number"
+                                           id="pedigree"
+                                           name="DiabetesPedigreeFunction"
+                                           placeholder="Fonction pedigree diabète"
+                                           min="0"
+                                           max="3"
+                                           step="0.01"
+                                           required>
+                                    <small class="form-text">Antécédents familiaux</small>
+                                </div>
+
+                                <!-- Âge -->
+                                <div class="form-group">
+                                    <label for="age">
+                                        <i class="fas fa-calendar"></i>
+                                        Âge
+                                    </label>
+                                    <input type="number"
+                                           id="age"
+                                           name="Age"
+                                           placeholder="Votre âge"
+                                           min="1"
+                                           max="120"
+                                           step="1"
+                                           required>
+                                    <small class="form-text">Années</small>
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="reset" class="btn btn-secondary">
+                                    <i class="fas fa-undo"></i>
+                                    Réinitialiser
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-robot"></i>
+                                    Prédire
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Section des résultats -->
+                {% if prediction_text %}
+                <section class="result-section">
+                    <div class="result-card {{ 'result-positive' if 'non' not in prediction_text else 'result-negative' }}">
+                        <div class="result-icon">
+                            {% if 'non' in prediction_text %}
+                                <i class="fas fa-check-circle"></i>
+                            {% else %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                            {% endif %}
+                        </div>
+                        <div class="result-content">
+                            <h2 class="result-title">{{ prediction_text }}</h2>
+                            {% if probability %}
+                            <div class="probability-bar">
+                                <div class="probability-fill" style="width: {{ probability }}%">
+                                    <span class="probability-text">{{ probability }}% de risque</span>
+                                </div>
+                            </div>
+                            <p class="probability-value">Niveau de confiance: {{ probability }}%</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Recommandations basées sur le résultat -->
+                    <div class="recommendations">
+                        <h3>
+                            <i class="fas fa-lightbulb"></i>
+                            Recommandations
+                        </h3>
+                        {% if 'non' in prediction_text %}
+                        <p>Continuez à maintenir un mode de vie sain et à surveiller régulièrement votre santé.</p>
+                        {% else %}
+                        <p>⚠️ Consultez un médecin pour un diagnostic approfondi et suivez ses recommandations.</p>
+                        {% endif %}
+                    </div>
+                </section>
+                {% endif %}
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>DiabPredict</h4>
+                    <p>Application de prédiction du diabète basée sur le machine learning</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens utiles</h4>
+                    <ul>
+                        <li><a href="#about">À propos</a></li>
+                        <li><a href="#privacy">Confidentialité</a></li>
+                        <li><a href="#terms">Conditions d'utilisation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p><i class="fas fa-envelope"></i> contactjuste@diabpredict.com</p>
+                    <p><i class="fas fa-phone"></i> +33 1 23 45 67 89</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 JusteAiméDiabPredict. Tous droits réservés.</p>
+                <p class="disclaimer">
+                    * Cette application est un outil d'aide à la décision et ne remplace pas un avis médical professionnel.
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
